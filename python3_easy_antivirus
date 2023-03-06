@@ -1,0 +1,25 @@
+import hashlib
+import os
+
+def scan_directory(directory_path, virus_database):
+    #扫描指定目录下的所有文件，并与病毒库进行比较，
+    #如果发现病毒文件，则打印警告信息。
+    for foldername, subfolders, filenames in os.walk(directory_path):
+        for filename in filenames:
+            file_path = os.path.join(foldername, filename)
+            with open(file_path, 'rb') as f:
+                file_hash = hashlib.md5(f.read()).hexdigest()
+            if file_hash in virus_database:
+                print("警告：发现病毒文件！", file_path)
+
+# 创建一个病毒库
+virus_database = set([
+    'e4d909c290d0fb1ca068ffaddf22cbd0', # 伪造的病毒库，这个自己去找
+    '827ccb0eea8a706c4c34a16891f84e7b'
+])
+
+# 定义要扫描的目录
+directory_to_scan = '指定目录'
+
+# 调用函数来扫描目录并检查是否有病毒文件
+scan_directory(directory_to_scan, virus_database)
